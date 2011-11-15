@@ -1,0 +1,15 @@
+This is my attempt to solve the Instagram engineering problem in PHP
+
+http://instagram-engineering.tumblr.com/post/12651721845/instagram-engineering-challenge-the-unshredder
+
+How To
+-----------------
+
+1- Place the file in a directory in your server
+2- Place the image in the same directly as the code or somewhere close by
+3- Hit your URL and the output will be shown directly on your browser
+
+
+To do
+----------------
+Make it command prompt friendly
