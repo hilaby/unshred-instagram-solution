@@ -12,7 +12,10 @@ $redFix = 300; // red value fix
 function getRelativeDiff($imageResource, $x1, $y1, $x2, $y2, $redFix = 0){
 	$rgb1 = imagecolorsforindex($imageResource, imagecolorat($imageResource, $x1, $y1));
 	$rgb2 = imagecolorsforindex($imageResource, imagecolorat($imageResource, $x2, $y2));
-	return abs($rgb1['red'] - $rgb2['red'] - $redFix) + abs($rgb1['green'] - $rgb2['green']) + abs($rgb1['blue'] - $rgb2['blue']);
+	$points = abs($rgb1['red'] - $rgb2['red'] - $redFix);
+	$points += abs($rgb1['green'] - $rgb2['green']);
+	$points += abs($rgb1['blue'] - $rgb2['blue']);
+	return $points;
 }
 
 // ESTIMATE - how many segments do we find in the shredded image
@@ -44,8 +47,10 @@ foreach($results as $key=>$value){
 
 arsort($tmp);
 
-$estimatedAverageCutSize = key($tmp); // this is the width estimated for each shredded segment
-$estimatedSegments = ceil($imageWidth/$estimatedAverageCutSize); // todo: need to reject the astimate if the number can't be devided equaly, and try to redo with a bigger $ySkips number
+// this is the width estimated for each shredded segment
+$estimatedAverageCutSize = key($tmp); 
+// todo: need to reject the astimate if the number can't be devided equaly, and try to redo with a bigger $ySkips number
+$estimatedSegments = ceil($imageWidth/$estimatedAverageCutSize); 
 
 // Explode and GLUE everything together
 $arrangments = array();
@@ -98,7 +103,8 @@ $logestRun = $runs[$toSort[key($toSort)]];
 
 $newImageResource = imagecreatetruecolor($imageWidth, $imageHeight);
 foreach($logestRun as $parts){
-	imagecopy ( $newImageResource , $imageResource , $newImagePart*$estimatedAverageCutSize , 0 , ($parts-1)*$estimatedAverageCutSize  , 0 ,  $estimatedAverageCutSize , $imageHeight);
+	$eiacs = $estimatedAverageCutSize;
+	imagecopy ( $newImageResource , $imageResource , $newImagePart*$eiacs , 0 , ($parts-1)*$eiacs  , 0 ,  $eiacs , $imageHeight);
 	$newImagePart++;
 }
 
